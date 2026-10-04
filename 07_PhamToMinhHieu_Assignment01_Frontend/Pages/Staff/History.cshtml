@@ -1,0 +1,75 @@
+@page
+@model _07_PhamToMinhHieu_Assignment01_Frontend.Pages.Staff.HistoryModel
+@{
+    ViewData["Title"] = "My News History";
+}
+
+<div class="mb-4">
+    <h2 class="fw-bold text-primary"><i class="bi bi-clock-history me-2"></i>My Articles History</h2>
+    <p class="text-muted">A record of all news articles created by you in the system.</p>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <span class="fw-bold">Your Authored Articles: <span class="badge bg-primary">@Model.HistoryArticles.Count articles</span></span>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-3">ID</th>
+                        <th>Created Date</th>
+                        <th>Title / Headline</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Tags</th>
+                        <th class="pe-3">Last Modified</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.HistoryArticles.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                <i class="bi bi-inbox fs-3 d-block mb-1"></i>You haven't created any articles yet.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var article in Model.HistoryArticles)
+                        {
+                            <tr>
+                                <td class="ps-3 fw-bold">#@article.NewsArticleId</td>
+                                <td>@(article.CreatedDate?.ToString("yyyy-MM-dd HH:mm") ?? "N/A")</td>
+                                <td>
+                                    <div class="fw-bold">@(article.NewsTitle ?? article.Headline)</div>
+                                    <small class="text-muted text-truncate d-inline-block" style="max-width: 250px;">@article.Headline</small>
+                                </td>
+                                <td><span class="badge bg-secondary">@(article.CategoryName ?? "N/A")</span></td>
+                                <td>
+                                    @if (article.NewsStatus == true)
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">Inactive</span>
+                                    }
+                                </td>
+                                <td>
+                                    @foreach (var tag in article.Tags)
+                                    {
+                                        <span class="badge bg-light text-dark border me-1">#@tag.TagName</span>
+                                    }
+                                </td>
+                                <td class="pe-3"><small>@(article.ModifiedDate?.ToString("yyyy-MM-dd HH:mm") ?? "N/A")</small></td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

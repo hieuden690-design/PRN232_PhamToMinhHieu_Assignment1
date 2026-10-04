@@ -1,0 +1,120 @@
+@page
+@model _07_PhamToMinhHieu_Assignment01_Frontend.Pages.Admin.ReportModel
+@{
+    ViewData["Title"] = "Statistics Report";
+}
+
+<div class="mb-4">
+    <h2 class="fw-bold text-primary"><i class="bi bi-bar-chart-line-fill me-2"></i>News Statistics Report</h2>
+    <p class="text-muted">Generate news reports by creation period sorted in descending order.</p>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>@Model.ErrorMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Filter Form -->
+<div class="card shadow-sm mb-4 border-0">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label fw-bold">From Date (StartDate):</label>
+                <input type="date" name="StartDate" value="@(Model.StartDate?.ToString("yyyy-MM-dd"))" class="form-control" />
+            </div>
+            <div class="col-md-4">
+                <label class="form-label fw-bold">To Date (EndDate):</label>
+                <input type="date" name="EndDate" value="@(Model.EndDate?.ToString("yyyy-MM-dd"))" class="form-control" />
+            </div>
+            <div class="col-md-4 d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-grow-1">
+                    <i class="bi bi-filter me-1"></i>Generate Report
+                </button>
+                <a asp-page="/Admin/Report" class="btn btn-outline-secondary">Reset</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Report Summary & Table -->
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <span class="fw-bold">Report Results: <span class="badge bg-primary">@Model.ReportArticles.Count articles found</span></span>
+        <span class="text-muted small">Sorted by Created Date (Descending)</span>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-3">Article ID</th>
+                        <th>Created Date</th>
+                        <th>Title / Headline</th>
+                        <th>Category</th>
+                        <th>Author</th>
+                        <th>Status</th>
+                        <th class="pe-3">Tags</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (!Model.ReportArticles.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                <i class="bi bi-calendar-x fs-3 d-block mb-1"></i>No news articles found in the selected date range.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var article in Model.ReportArticles)
+                        {
+                            <tr>
+                                <td class="ps-3 fw-bold">#@article.NewsArticleId</td>
+                                <td>
+                                    <span class="text-primary fw-semibold">
+                                        @(article.CreatedDate?.ToString("yyyy-MM-dd HH:mm") ?? "N/A")
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="fw-bold">@(article.NewsTitle ?? article.Headline)</div>
+                                    <small class="text-muted text-truncate d-inline-block" style="max-width: 320px;">@article.Headline</small>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary">@(article.CategoryName ?? "N/A")</span>
+                                </td>
+                                <td>@(article.CreatedByName ?? "N/A")</td>
+                                <td>
+                                    @if (article.NewsStatus == true)
+                                    {
+                                        <span class="badge bg-success">Active</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-warning text-dark">Inactive</span>
+                                    }
+                                </td>
+                                <td class="pe-3">
+                                    @if (article.Tags.Any())
+                                    {
+                                        @foreach (var tag in article.Tags)
+                                        {
+                                            <span class="badge bg-light text-dark border me-1">@tag.TagName</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted small">None</span>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

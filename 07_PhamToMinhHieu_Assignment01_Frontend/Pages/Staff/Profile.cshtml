@@ -1,0 +1,74 @@
+@page
+@model _07_PhamToMinhHieu_Assignment01_Frontend.Pages.Staff.ProfileModel
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3">
+                <h4 class="mb-0"><i class="bi bi-person-gear me-2"></i>My Profile</h4>
+                <small>View and update your personal account information</small>
+            </div>
+            <div class="card-body p-4">
+                @if (!string.IsNullOrEmpty(Model.SuccessMessage))
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i>@Model.SuccessMessage
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>@Model.ErrorMessage
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <form method="post">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Account ID</label>
+                        <input value="#@Model.ProfileForm.AccountId" class="form-control bg-light" readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Role</label>
+                        <input value="Staff (Role 1)" class="form-control bg-light" readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ProfileForm.AccountName" class="form-label fw-bold">Full Name</label>
+                        <input asp-for="ProfileForm.AccountName" class="form-control" required maxlength="100" />
+                        <span asp-validation-for="ProfileForm.AccountName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ProfileForm.AccountEmail" class="form-label fw-bold">Email Address</label>
+                        <input asp-for="ProfileForm.AccountEmail" type="email" class="form-control" required maxlength="70" />
+                        <span asp-validation-for="ProfileForm.AccountEmail" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="ProfileForm.AccountPassword" class="form-label fw-bold">New Password (leave empty to keep unchanged)</label>
+                        <input asp-for="ProfileForm.AccountPassword" type="password" class="form-control" maxlength="70" placeholder="••••••••" />
+                        <span asp-validation-for="ProfileForm.AccountPassword" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a asp-page="/Staff/Articles" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save me-1"></i>Save Profile
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
