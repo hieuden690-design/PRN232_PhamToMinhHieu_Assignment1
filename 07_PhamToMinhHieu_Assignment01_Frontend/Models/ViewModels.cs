@@ -63,7 +63,7 @@ public class CategoryViewModel
 
     public short? ParentCategoryId { get; set; }
     public string? ParentCategoryName { get; set; }
-    public bool? IsActive { get; set; } = true;
+    public bool IsActive { get; set; } = true;
 }
 
 public class TagViewModel
@@ -97,7 +97,7 @@ public class NewsArticleViewModel
     public short? CategoryId { get; set; }
     public string? CategoryName { get; set; }
 
-    public bool? NewsStatus { get; set; } = true;
+    public bool NewsStatus { get; set; } = true;
 
     public short? CreatedById { get; set; }
     public string? CreatedByName { get; set; }
