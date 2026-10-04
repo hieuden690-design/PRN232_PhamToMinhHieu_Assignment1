@@ -1,0 +1,37 @@
+@baseUrl = http://localhost:5190/api
+
+### 1. Test Login Admin (from appsettings.json)
+POST {{baseUrl}}/Auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@FUNewsManagementSystem.org",
+  "password": "@@abc123@@"
+}
+
+### 2. Test Login Staff (from Database)
+POST {{baseUrl}}/Auth/login
+Content-Type: application/json
+
+{
+  "email": "IsabellaDavid@FUNewsManagement.org",
+  "password": "@1"
+}
+
+### 3. Test Get Active News (Public unauthenticated)
+GET {{baseUrl}}/NewsArticles/active
+
+### 4. Test OData Query on News Articles
+GET {{baseUrl}}/NewsArticles?$filter=CategoryId%20eq%201&$orderby=CreatedDate%20desc
+
+### 5. Test Get Categories
+GET {{baseUrl}}/Categories
+
+### 6. Test Delete Category Constraint (Should FAIL with 400 because Category 1 has articles)
+DELETE {{baseUrl}}/Categories/1
+
+### 7. Test Delete Account Constraint (Should FAIL with 400 because Account 1 created articles)
+DELETE {{baseUrl}}/Accounts/1
+
+### 8. Test Admin Report by Period
+GET {{baseUrl}}/Reports?startDate=2024-01-01&endDate=2025-01-01
